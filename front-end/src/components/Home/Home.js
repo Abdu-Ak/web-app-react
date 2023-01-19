@@ -1,7 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar'
-
+ 
 function Home() {
+
+  const auth = useSelector((state) => {
+    return state;
+  });
+  const navigate = useNavigate()
+
+
+  useEffect(()=>{
+  
+    if (auth === undefined) {
+      navigate("/");
+    } else if(auth === "" || auth.accountType !== "user" ){
+      navigate("/");
+    }
+  })
   return (
    <div>
     <Navbar/>

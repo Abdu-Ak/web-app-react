@@ -1,63 +1,61 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "../../axios";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
-function Signup() {
+function AdminEdit() {
   const navigate = useNavigate();
-  
+
+  const data = useSelector((state) => {
+    return state;
+  });
+
   const [errors,setErrors] = useState({})
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, SetPhone] = useState("");
   const [password, setPassword] = useState("");
 
-const validate = ()=>{  
-    if (name==="") {
-       setErrors({name:'username required..!'})
-    } else if(!/^[A-Za-z\s]*$/.test(name)) {
-      setErrors({name:'Username should only contain alphabets and space'})
-    }else if (email==="") {
-      setErrors({email:'email required..!'})
-    }else if (
-      !String(email)
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
-    ) {
-      setErrors({email:'Invalid email..!'})
-    }else if (phone==="") {
-      setErrors({phone:'phone number required..!'})
-    }else if (phone.length !== 10) {
-      setErrors({phone:'Invalid phone number..!'})
-    }else if (password==="") {
-      setErrors({password:'Password required..!'})
-    }else if (password.length < 4) {
-      setErrors({password:'Password should have atleast 4 characters..!'})
-    } else{
-      setErrors(false)
-    }
+  const validate = ()=>{
+      if (name==="") {
+         setErrors({name:'username required..!'})
+      } else if(!/^[A-Za-z\s]*$/.test(name)) {
+        setErrors({name:'Username should only contain alphabets and space'})
+      }else if (email==="") {
+        setErrors({email:'email required..!'})
+      }else if (
+        !String(email)
+          .toLowerCase()
+          .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          )
+      ) {
+        setErrors({email:'Invalid email..!'})
+      }else if (phone==="") {
+        setErrors({phone:'phone number required..!'})
+      }else if (phone.length !== 10) {
+        setErrors({phone:'Invalid phone number..!'})
+      }else if (password==="") {
+        setErrors({password:'Password required..!'})
+      }else if (password.length < 4) {
+        setErrors({password:'Password should have atleast 4 characters..!'})
+      } else{
+        setErrors(false)
+      }
 
-}
+  }
+  const handleSubmit= ()=>{
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    validate();
-   if (!errors) {
-    axios
-    .post("/register", {
-      name,
-      email,
-      phone,
-      password,
+  }
+
+  useEffect(() => {
+    
+    axios.post("http://localhost:3000/admin/getedit", {
+      id: data.id,
+    }).then((res)=>{
+
     })
-    .then((response) => {
-      console.log(response);
-      navigate("/");
-    });
-   }
-   
-  };
+  });
 
   return (
     <div>
@@ -70,12 +68,11 @@ const validate = ()=>{
                   <div className="row justify-content-center">
                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                       <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                        Sign up
+                        Add User
                       </p>
 
                       <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
                         <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-user fa-lg me-3 mb-4 fa-fw"></i>
                           <div className="form-outline flex-fill mb-0">
                             <input
                               type="text"
@@ -83,19 +80,17 @@ const validate = ()=>{
                               value={name}
                               onChange={(e) => {
                                 setName(e.target.value);
-                                
                               }}
                               className="form-control"
                             />
                             <label className="form-label" for="form3Example1c">
-                              Your Name
+                              Name
                             </label>
                             <p className="text-danger">{errors.name}</p>
                           </div>
                         </div>
 
                         <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-envelope fa-lg me-3 mb-4 fa-fw"></i>
                           <div className="form-outline flex-fill mb-0">
                             <input
                               type="email"
@@ -107,14 +102,13 @@ const validate = ()=>{
                               className="form-control"
                             />
                             <label className="form-label" for="form3Example3c">
-                              Your Email
+                              Email
                             </label>
                             <p className="text-danger">{errors.email}</p>
                           </div>
                         </div>
 
                         <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-phone fa-lg me-3 mb-4 fa-fw"></i>
                           <div className="form-outline flex-fill mb-0">
                             <input
                               type="number"
@@ -133,7 +127,6 @@ const validate = ()=>{
                         </div>
 
                         <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-key fa-lg me-3 mb-4 fa-fw"></i>
                           <div className="form-outline flex-fill mb-0">
                             <input
                               type="password"
@@ -151,39 +144,12 @@ const validate = ()=>{
                           </div>
                         </div>
 
-                        <div className="form-check d-flex justify-content-center mb-5">
-                          <label
-                            className="form-check-label"
-                            for="form2Example3"
-                          >
-                            Already have a account ?{" "}
-                            <Link
-                              className="text-danger  "
-                              style={{
-                                textDecoration: "none",
-                                fontWeight: "bold",
-                              }}
-                              to={"/"}
-                            >
-                              {" "}
-                              Login
-                            </Link>
-                          </label>
-                        </div>
-
                         <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                           <button type="submit" className="btn btn-dark btn-lg">
-                            Register
+                            Submit
                           </button>
                         </div>
                       </form>
-                    </div>
-                    <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                      <img
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                        className="img-fluid"
-                        alt="Sample"
-                      />
                     </div>
                   </div>
                 </div>
@@ -196,4 +162,4 @@ const validate = ()=>{
   );
 }
 
-export default Signup;
+export default AdminEdit;
