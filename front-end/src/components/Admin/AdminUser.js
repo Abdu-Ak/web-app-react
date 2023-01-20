@@ -20,8 +20,8 @@ function AdminUser() {
     });
     navigate("/");
   };
-
-  
+   
+ 
 const handleSearch = (e)=>{
     setsearch(e.target.value);
    if (search !== "") {
@@ -118,10 +118,12 @@ const handleSearch = (e)=>{
                 <td style={{ width: "20%" }}>
                   <div class="d-flex justify-content-evenly ">
                       <button className="btn btn-outline-primary" onClick={()=>{
+                          
+                        
                          dispatch({
-                            type: "addData",
+                            type: "editData",
                             data: data._id
-                          });
+                          })
                           navigate("/edituser")
                       }} ><i className="fa fa-edit"></i></button>
                       <button className="btn btn-outline-danger" onClick={()=>{
@@ -135,7 +137,7 @@ const handleSearch = (e)=>{
                             confirmButtonText: 'Yes, delete it!'
                           })
                           .then((result) => {
-                            console.log(result);
+                            
                             if (result.isConfirmed) {
                                 axios.post("http://localhost:3000/admin/delete", {
                             id: data._id,
@@ -166,15 +168,20 @@ const handleSearch = (e)=>{
                 <td>{data.phone}</td>
                 <td>{data.image ? <img src={data.image.url} alt="profile" style={{width:'100px', height:"100px" }}  /> : <p>No profile</p> } </td>
                 <td style={{ width: "20%" }}>
+                  
                   <div class="d-flex justify-content-evenly ">
                       <button className="btn btn-outline-primary" onClick={()=>{
+                        
                          dispatch({
-                            type: "addData",
+                            type: "editData",
                             data: data._id
                           });
+                          
                           navigate("/edituser")
+
                       }} ><i className="fa fa-edit"></i></button>
                       <button className="btn btn-outline-danger" onClick={()=>{
+                       
                         Swal.fire({
                             title: 'Are you sure?',
                             text: "You won't be able to revert this!",
@@ -185,7 +192,6 @@ const handleSearch = (e)=>{
                             confirmButtonText: 'Yes, delete it!'
                           })
                           .then((result) => {
-                            console.log(result);
                             if (result.isConfirmed) {
                                 axios.post("http://localhost:3000/admin/delete", {
                             id: data._id,
@@ -219,7 +225,7 @@ const handleSearch = (e)=>{
                   <div class="d-flex justify-content-evenly ">
                       <button className="btn btn-outline-primary" onClick={()=>{
                          dispatch({
-                            type: "addData",
+                            type: "editData",
                             data: data._id
                           });
                           navigate("/edituser")

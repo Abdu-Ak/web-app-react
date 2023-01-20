@@ -9,7 +9,7 @@ router.post("/getedit",adminControllers.getEdit)
 
 router.post("/delete",adminControllers.deleteUser)
 
-
+router.post("/edituser",adminControllers.editUser)
 
 
 

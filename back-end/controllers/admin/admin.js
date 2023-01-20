@@ -11,7 +11,11 @@ getUsers : (req,res)=>{
 },
 
 getEdit : (req,res)=>{
-    console.log(req);
+   let id  = req.body.id
+     
+     userdetails.findById({_id : id}).then((userdata)=>{
+        res.send({success: true , details : userdata})
+     })
 },
 
 deleteUser: (req,res)=>{
@@ -21,6 +25,15 @@ deleteUser: (req,res)=>{
         res.send({succes:true })
     })
      
+},
+
+editUser : (req,res)=>{
+     let {id,name,email,phone} =req.body
+       
+     userdetails.findByIdAndUpdate({_id : id},{name:name, email:email, phone:phone}).then((userdata)=>{
+        res.send({success : true})
+     })
+       
 }
 
     

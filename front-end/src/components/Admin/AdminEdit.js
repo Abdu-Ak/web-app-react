@@ -14,7 +14,7 @@ function AdminEdit() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, SetPhone] = useState("");
-  const [password, setPassword] = useState("");
+
 
   const validate = ()=>{
       if (name==="") {
@@ -35,27 +35,40 @@ function AdminEdit() {
         setErrors({phone:'phone number required..!'})
       }else if (phone.length !== 10) {
         setErrors({phone:'Invalid phone number..!'})
-      }else if (password==="") {
-        setErrors({password:'Password required..!'})
-      }else if (password.length < 4) {
-        setErrors({password:'Password should have atleast 4 characters..!'})
       } else{
         setErrors(false)
       }
 
   }
-  const handleSubmit= ()=>{
-
+  const handleSubmit= (e)=>{
+    e.preventDefault();
+    validate();
+    if (!errors) {
+      axios
+        .post("http://localhost:3000/admin/edituser", {
+          id : data.data,
+          name,
+          email,
+          phone,
+        }).then((res)=>{
+          if (res.data.success) {
+            navigate('/admin')
+          }
+        })
   }
+}
 
   useEffect(() => {
-    
     axios.post("http://localhost:3000/admin/getedit", {
-      id: data.id,
+      id: data.data,
     }).then((res)=>{
-
+    
+      setName(res.data.details.name)
+      setEmail(res.data.details.email)
+      SetPhone(res.data.details.phone)
     })
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   return (
     <div>
@@ -68,7 +81,7 @@ function AdminEdit() {
                   <div className="row justify-content-center">
                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                       <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                        Add User
+                        Edit User
                       </p>
 
                       <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
@@ -126,23 +139,7 @@ function AdminEdit() {
                           </div>
                         </div>
 
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <div className="form-outline flex-fill mb-0">
-                            <input
-                              type="password"
-                              id="form3Example4cd"
-                              value={password}
-                              onChange={(e) => {
-                                setPassword(e.target.value);
-                              }}
-                              className="form-control"
-                            />
-                            <label className="form-label" for="form3Example4cd">
-                              password
-                            </label>
-                            <p className="text-danger">{errors.password}</p>
-                          </div>
-                        </div>
+                      
 
                         <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                           <button type="submit" className="btn btn-dark btn-lg">
